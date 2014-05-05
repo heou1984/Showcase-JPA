@@ -1,27 +1,19 @@
 package org.showcase.datakeep.dao.impl;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 
 import org.showcase.datakeep.dao.ViewpointDao;
 
 
 public class ViewpointDaoImpl implements ViewpointDao {
 	
-	private EntityManagerFactory entityManagerFactory;
-	//private EntityManager _entityManager;
-	
+	@PersistenceContext(unitName = "mongo", type = PersistenceContextType.EXTENDED)
+	private EntityManager em;
+
 	public EntityManager getEntityManager(){
-		return this.entityManagerFactory.createEntityManager();
+		return em;
 	}
 	
-    public EntityManagerFactory getEntityManagerFactory()
-    {
-        return entityManagerFactory;
-    }
-
-    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory)
-    {
-        this.entityManagerFactory = entityManagerFactory;
-    }
 }
