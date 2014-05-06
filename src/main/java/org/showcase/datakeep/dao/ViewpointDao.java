@@ -1,10 +1,14 @@
 package org.showcase.datakeep.dao;
 
-import javax.persistence.EntityManager;
+import java.util.List;
 
-public interface ViewpointDao {
+import org.showcase.datakeep.entities.Viewpoint;
+
+public interface ViewpointDao extends BaseDao{
 	
-	EntityManager getEntityManager();
-	
+	void save(Viewpoint viewpoint);
+	void remove(Viewpoint viewpoint);
+	void merge(Viewpoint viewpoint);
+	List<Viewpoint> findByCity(String city);
 
 }
