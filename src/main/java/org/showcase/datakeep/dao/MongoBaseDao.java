@@ -7,29 +7,53 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
 public abstract class MongoBaseDao implements BaseDao{
-	//@PersistenceUnit
+	
+	/*
+	private EntityManagerFactory _entityManagerFactory;
+	*/
+	
 	@PersistenceContext(name="mongo", type=PersistenceContextType.EXTENDED)
 	private EntityManager _em;
 	
 	public EntityManager getEntityManager(){
-		return _em;
+		//return this._entityManagerFactory.createEntityManager();
+		return this._em;
 	}
 	
 	public void save(Object entity){
 		if(null != entity){
-			this.getEntityManager().persist(entity);
+			EntityManager _em = this.getEntityManager();
+			_em.persist(entity);
+			//_em.close();
 		}
 	}
 	
 	public void remove(Object entity){
-		this.getEntityManager().remove(entity);
+		EntityManager _em = this.getEntityManager();	
+		_em.remove(entity);
+		//_em.close();
 	}
 	
 	public void merge(Object entity){
-		this.getEntityManager().merge(entity);
+		EntityManager _em = this.getEntityManager();	
+		_em.merge(entity);
+		//_em.close();
 	}
 	
 	public List<?> findAll(Class<?> clazz){
-		return this.getEntityManager().createQuery("select p from ".concat(clazz.getSimpleName()).concat(" p")).getResultList();
+		EntityManager _em = this.getEntityManager();	
+		List<?> _list = _em.createQuery("select p from ".concat(clazz.getSimpleName()).concat(" p")).getResultList();
+		//_em.close();
+		return _list;
 	}
+	
+	/*
+	public EntityManagerFactory getEntityManagerFactory(){
+        return _entityManagerFactory;
+    }
+
+    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory){
+        this._entityManagerFactory = entityManagerFactory;
+    }
+    */
 }

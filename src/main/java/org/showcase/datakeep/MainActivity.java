@@ -9,7 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class MainActivity {
 	
-	public static final void main(String[] args){
+	public static final void main(String[] args) throws InterruptedException{
 
 		ApplicationContext context= new ClassPathXmlApplicationContext("context-datakeeper.xml");
 		
@@ -31,12 +31,13 @@ public class MainActivity {
 		
 		//_vpDao.save(_vp);
 
-		for(int i=0; i<200; i++){
+		for(int i=0; i<500; i++){
 			new Thread(new POCDao(context)).start();
+			Thread.currentThread().sleep(10);
 		}
 		
 		try {
-			Thread.sleep(1000000);
+			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,9 +64,8 @@ class POCDao implements Runnable{
 			_vp.setCity("新加坡");
 		}
 		_vpDao.merge(_vp);
-		System.out.println(">>>>>>>>>>>>>>>>"+_vp.getCity());
-
-		
+		System.out.println(Thread.currentThread().getName()+">>>>>>>>>>>>>>>>"+_vp.getCity());
+		Thread.currentThread().interrupt();
 	}
 	
 }

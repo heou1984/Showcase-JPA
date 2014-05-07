@@ -13,7 +13,9 @@
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 						
 	<bean id="viewpointDao" class="org.showcase.datakeep.dao.impl.ViewpointDao">
+		<!-- <property name="entityManagerFactory" ref="emf"></property> -->
 	</bean>
+	
 	<bean id="emf"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="mongo" />
@@ -33,6 +35,9 @@
 				<value>META-INF/persistence.xml</value>
 			</list>
 		</property>
+	</bean>
+	<bean id="viewpointService" class="org.showcase.datakeep.service.ViewpointService">
+		<property name="viewpointDao" ref="viewpointDao"></property>
 	</bean>
 	<!-- 
 	<bean id="matchAllWithPropReq"
