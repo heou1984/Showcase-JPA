@@ -1,8 +1,6 @@
 package org.showcase.datakeep;
 
-import java.util.List;
-
-import org.showcase.datakeep.dao.ViewpointDao;
+import org.showcase.datakeep.dao.impl.ViewpointDao;
 import org.showcase.datakeep.entities.Center;
 import org.showcase.datakeep.entities.Location;
 import org.showcase.datakeep.entities.Viewpoint;
@@ -14,7 +12,6 @@ public class MainActivity {
 	public static final void main(String[] args){
 
 		ApplicationContext context= new ClassPathXmlApplicationContext("context-datakeeper.xml");
-		ViewpointDao _vpDao = (ViewpointDao)context.getBean("viewpointDao");
 		
 		Center _center = new Center();
 		_center.setLat(1.352083f);
@@ -33,16 +30,44 @@ public class MainActivity {
 		_vp.setViewpoint("新加坡植物园");
 		
 		//_vpDao.save(_vp);
-		
-		List<Viewpoint> _list = _vpDao.findByCity("南洋");
-		Viewpoint _vp2 = _list.get(0);
-		//_vp2.setCity("南洋");
-		
-		//_em.getTransaction().rollback();
-		/*
-		Query q = _vm.createQuery("select vp from Viewpoint vp");
-        List<?> viewpointList = q.getResultList();
-        */
-	}
 
+		for(int i=0; i<200; i++){
+			new Thread(new POCDao(context)).start();
+		}
+		
+		try {
+			Thread.sleep(1000000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 }
+
+class POCDao implements Runnable{
+	ApplicationContext _context;
+	
+	public POCDao(ApplicationContext context){
+		_context = context;
+	}
+	
+	@Override
+	public void run() {
+		ViewpointDao _vpDao = (ViewpointDao)_context.getBean("viewpointDao");
+		Viewpoint _vp = (Viewpoint)_vpDao.findAll(Viewpoint.class).get(0);
+		if("新加坡".equals(_vp.getCity())){
+			_vp.setCity("南洋");
+		}else{
+			_vp.setCity("新加坡");
+		}
+		_vpDao.merge(_vp);
+		System.out.println(">>>>>>>>>>>>>>>>"+_vp.getCity());
+
+		
+	}
+	
+}
+
+

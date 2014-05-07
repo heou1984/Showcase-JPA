@@ -13,7 +13,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.2.1.RELEASE</spring.version>
-		<kundera.version>2.9.1</kundera.version>
+		<kundera.version>2.11</kundera.version>
 	</properties>
 
 	<dependencies>
