@@ -19,6 +19,7 @@
  			<property name="kundera.pool.size.max.active" value="50" />
 			<property name="kundera.pool.size.max.total" value="50" />
 			<property name="kundera.client.property" value="kunderaMongoTest.xml" />
+			<property name="kundera.batch.size" value="50" />
 			<!-- for mongolab -->
 			<!-- 
 			<property name="kundera.nodes" value="ds035488.mongolab.com" />

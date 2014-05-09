@@ -2,11 +2,12 @@
 package org.showcase.datakeep.entities;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.impetus.kundera.gis.geometry.Point;
 
 @Entity
 @Table(name="viewpoint", schema = "crossroad@mongo")
@@ -17,42 +18,24 @@ public class Viewpoint{
 	@GeneratedValue()
     private String id;
 	
-	@Embedded
-	private Center center;
+	@Column(name="center")
+	private Point center;
 	@Column(name="city")
     private String city;
 	@Column(name="elevation")
     private Float elevation;
 	@Column(name="level")
     private Integer level;
-	@Embedded
-    private Location location;
+	@Column(name="location")
+	private Point location;
 	@Column(name="viewpoint")
     private String viewpoint;
     @Column(name="rate")
     private int rate;
-    public int getRate() {
-		return rate;
-	}
-
-	public void setRate(int rate) {
-		this.rate = rate;
-	}
-
-	public String getSearch() {
-		return search;
-	}
-
-	public void setSearch(String search) {
-		this.search = search;
-	}
-	@Column(name="search")
+    @Column(name="search")
 	private String search;
+	
 
-    
-    
-    
-    
     public String getId() {
 		return id;
 	}
@@ -61,11 +44,11 @@ public class Viewpoint{
 		this.id = id;
 	}
 	
-    public Center getCenter() {
+    public Point getCenter() {
         return center;
     }
 
-    public void setCenter(Center center) {
+    public void setCenter(Point center) {
         this.center = center;
     }
 
@@ -93,11 +76,11 @@ public class Viewpoint{
         this.level = level;
     }
 
-    public Location getLocation() {
+    public Point getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(Point location) {
         this.location = location;
     }
 
@@ -112,5 +95,21 @@ public class Viewpoint{
     public String toString(){
         return viewpoint;
     }
+    
+    public int getRate() {
+		return rate;
+	}
+
+	public void setRate(int rate) {
+		this.rate = rate;
+	}
+
+	public String getSearch() {
+		return search;
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
+	}
 
 }

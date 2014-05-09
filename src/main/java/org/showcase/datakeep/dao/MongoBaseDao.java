@@ -24,6 +24,7 @@ public abstract class MongoBaseDao implements BaseDao{
 		if(null != entity){
 			EntityManager _em = this.getEntityManager();
 			_em.persist(entity);
+			_em.flush();
 			//_em.close();
 		}
 	}
@@ -31,22 +32,25 @@ public abstract class MongoBaseDao implements BaseDao{
 	public void remove(Object entity){
 		EntityManager _em = this.getEntityManager();	
 		_em.remove(entity);
+		_em.clear();
 		//_em.close();
 	}
 	
 	public void merge(Object entity){
 		EntityManager _em = this.getEntityManager();	
 		_em.merge(entity);
+		_em.clear();
 		//_em.close();
 	}
 	
 	public List<?> findAll(Class<?> clazz){
-		EntityManager _em = this.getEntityManager();	
-		List<?> _list = _em.createQuery("select p from ".concat(clazz.getSimpleName()).concat(" p")).getResultList();
+		EntityManager _em = this.getEntityManager();
+		String _queryStr = String.format("Select p from $s p", clazz.getSimpleName());
+		List<?> _list = _em.createQuery(_queryStr).getResultList();
 		//_em.close();
 		return _list;
 	}
-	
+		
 	/*
 	public EntityManagerFactory getEntityManagerFactory(){
         return _entityManagerFactory;

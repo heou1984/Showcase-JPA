@@ -1,37 +1,36 @@
 package org.showcase.datakeep;
 
+import java.util.List;
+
 import org.showcase.datakeep.dao.impl.ViewpointDao;
-import org.showcase.datakeep.entities.Center;
-import org.showcase.datakeep.entities.Location;
 import org.showcase.datakeep.entities.Viewpoint;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.impetus.kundera.gis.SurfaceType;
+import com.impetus.kundera.gis.geometry.Point;
 
 public class MainActivity {
 	
 	public static final void main(String[] args) throws InterruptedException{
 
 		ApplicationContext context= new ClassPathXmlApplicationContext("context-datakeeper.xml");
-		
-		Center _center = new Center();
-		_center.setLat(1.352083f);
-		_center.setLng(103.819836f);
-		Location _location = new Location();
-		_location.setLat(1.3107237f);
-		_location.setLng(103.8150856f);
+		ViewpointDao _vpDao = (ViewpointDao)context.getBean("viewpointDao");
+		Point _center = new Point(1.3083, 103.8836);
+		Point _location = new Point(1.31037, 103.50856);
 		Viewpoint _vp = new Viewpoint();
 		_vp.setCenter(_center);
-		_vp.setCity("新加坡");
-		_vp.setElevation(36.90627670288086f);
+		_vp.setCity("南洋");
+		_vp.setElevation(36.906276788086f);
 		_vp.setLevel(5);
 		_vp.setLocation(_location);
 		_vp.setRate(3490);
-		_vp.setSearch("新加坡植物园");
-		_vp.setViewpoint("新加坡植物园");
+		_vp.setSearch("南洋博物馆");
+		_vp.setViewpoint("南洋博物馆");
 		
 		//_vpDao.save(_vp);
 
-		for(int i=0; i<500; i++){
+		for(int i=0; i<1; i++){
 			new Thread(new POCDao(context)).start();
 			Thread.currentThread().sleep(10);
 		}
@@ -57,14 +56,10 @@ class POCDao implements Runnable{
 	@Override
 	public void run() {
 		ViewpointDao _vpDao = (ViewpointDao)_context.getBean("viewpointDao");
-		Viewpoint _vp = (Viewpoint)_vpDao.findAll(Viewpoint.class).get(0);
-		if("新加坡".equals(_vp.getCity())){
-			_vp.setCity("南洋");
-		}else{
-			_vp.setCity("新加坡");
-		}
-		_vpDao.merge(_vp);
-		System.out.println(Thread.currentThread().getName()+">>>>>>>>>>>>>>>>"+_vp.getCity());
+		List<Viewpoint> _list = _vpDao.findNear(1.3107237, 103.8150856, 1, SurfaceType.FLAT) ;
+		List<Viewpoint> _cityList = _vpDao.findByCity("新加坡");
+		List<Viewpoint> _searchList = _vpDao.findBySearchKey("南");
+		System.out.println(Thread.currentThread().getName()+">>>>>>>>>>>>>>>>");
 		Thread.currentThread().interrupt();
 	}
 	
